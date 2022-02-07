@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux'
+import { store } from './store/configureStore'
+import { ChakraProvider } from '@chakra-ui/react'
+import FullScreenFallback from './FullScreenFallback';
+
+const App = React.lazy(() => import('./App'))
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+      <ChakraProvider>
+          <Provider store={store}>
+              <Suspense fallback={<FullScreenFallback />}>
+                <App />
+              </Suspense>
+          </Provider>
+      </ChakraProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
